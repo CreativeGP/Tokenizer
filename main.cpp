@@ -6,8 +6,6 @@
 #include <string>
 #include <vector>
 
-#include "util.h"
-
 #define MAX_FILE_SIZE 100000
 
 #define PARSE_MODE_DQUOT 1
@@ -44,8 +42,8 @@ int main(int args, char **argv) {
 
     // parse
     string specials = "!\"#$%&'()-^\\@[;:],./=~|`{+*}<>?";
-    string ignores = "\n";
-    string ignoresplit = " ";
+    string ignores = "";
+    string ignoresplit = " \n";
     string little = "";
     int mode = 0;
     for (int i = 0; i < length; ++i) {
@@ -57,14 +55,14 @@ int main(int args, char **argv) {
         }
 
         if (mode == PARSE_MODE_QUOT) {
-            if (buffer[i-1] != '\\' && buffer[i] == '\'') {
+            if ((buffer[i-2] == '\\' || buffer[i-1] != '\\') && buffer[i] == '\'') {
                 mode = 0;
                 add_token(little);
                 tokens.push_back("'");
                 little = "";
             } else little += buffer[i];
         } else if (mode == PARSE_MODE_DQUOT) {
-            if (buffer[i-2]buffer[i-1] != '\\' && buffer[i] == '"') {
+            if ((buffer[i-2] == '\\' || buffer[i-1] != '\\') && buffer[i] == '"') {
                 mode = 0;
                 add_token(little);
                 tokens.push_back("\"");
