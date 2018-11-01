@@ -43,7 +43,7 @@ int main(int args, char **argv) {
     // parse
     string specials = "!\"#$%&'()-^\\@[;:],./=~|`{+*}<>?";
     string ignores = "";
-    string ignoresplit = " \n";
+    string ignoresplit = " \t\n";
     string little = "";
     int mode = 0;
     for (int i = 0; i < length; ++i) {
