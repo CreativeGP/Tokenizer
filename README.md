@@ -1,2 +1,2 @@
-# c2js
-:: Imperative -> Imperative
+# Tokenizer
+Useless square tokenizer...
