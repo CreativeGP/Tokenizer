@@ -2,8 +2,6 @@
 #define __TOKENIZER_H__
 
 #define MAX_FILE_SIZE 100000
-#define PARSE_MODE_DQUOT 1
-#define PARSE_MODE_QUOT 2
 
 #include <string>
 #include <vector>
@@ -25,6 +23,8 @@ class Tokenizer {
 
     private:
     int add_token(string value);
+
+    const int escape_mode_padding = 100;
 };
 
 #endif

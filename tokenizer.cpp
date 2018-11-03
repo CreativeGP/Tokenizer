@@ -1,4 +1,5 @@
 #include "tokenizer.h"
+#include "util.h"
 #include <fstream>
 
 Tokenizer::Tokenizer() {}
@@ -19,7 +20,8 @@ int Tokenizer::set(string key, string value) {
 
 int Tokenizer::preset(string name) {
     if (name == "c" || name == "cpp") {
-        set("specials", "!\"#$%&'()-^\\@[;:],./=~|`{+*}<>?");
+        set("specials", "!#$%&()-^\\@[;:],./=~|`{+*}<>?");
+        set("escaper", "\"'");
         set("ignores", "");
         set("ignoresplit", " \t\n");
         return 0;
@@ -31,6 +33,7 @@ int Tokenizer::preset(string name) {
 int Tokenizer::tokenize(string code) {
     string specials = settings.at("specials");
     string ignores = settings.at("ignores");
+    string escaper = settings.at("escaper");
     string ignoresplit = settings.at("ignoresplit");
 
     tokens.clear();
@@ -45,32 +48,26 @@ int Tokenizer::tokenize(string code) {
             continue;
         }
 
-        if (mode == PARSE_MODE_QUOT) {
-            if ((code[i-2] == '\\' || code[i-1] != '\\') && code[i] == '\'') {
-                mode = 0;
+        if (mode != 0) {
+            char escape_chr = escaper[mode-escape_mode_padding];
+            if ((code[i-2] == '\\' || code[i-1] != '\\') && code[i] == escape_chr) {
                 add_token(little);
-                tokens.push_back("'");
-                little = "";
-            } else little += code[i];
-        } else if (mode == PARSE_MODE_DQUOT) {
-            if ((code[i-2] == '\\' || code[i-1] != '\\') && code[i] == '"') {
+                tokens.push_back(ctos(escape_chr));
                 mode = 0;
-                add_token(little);
-                tokens.push_back("\"");
                 little = "";
             } else little += code[i];
         } else {
-            if (code[i] == '"')
-                mode = PARSE_MODE_DQUOT;
-            else if (code[i] == '\'')
-                mode = PARSE_MODE_QUOT;
+            if (escaper.find(code[i]) != string::npos) {
+                mode = escape_mode_padding + escaper.find(code[i]);
+                add_token(ctos(code[i]));
+                continue;
+            }
             
             if (specials.find(code[i]) != string::npos) {
                 add_token(little);
                 little = "";
 
-                char tmp[] = {code[i], '\0'};
-                tokens.push_back(tmp);
+                tokens.push_back(ctos(code[i]));
             } else little += code[i];
         }
     }
