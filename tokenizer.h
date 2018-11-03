@@ -21,6 +21,7 @@ class Tokenizer {
     int tokenize(string code);
     int tokenize_file(string filename);
     int set(string key, string value);
+    int preset(string name);
 
     private:
     int add_token(string value);

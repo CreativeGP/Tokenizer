@@ -17,6 +17,17 @@ int Tokenizer::set(string key, string value) {
     return 0;
 }
 
+int Tokenizer::preset(string name) {
+    if (name == "c" || name == "cpp") {
+        set("specials", "!\"#$%&'()-^\\@[;:],./=~|`{+*}<>?");
+        set("ignores", "");
+        set("ignoresplit", " \t\n");
+        return 0;
+    }
+
+    return -1;
+}
+
 int Tokenizer::tokenize(string code) {
     string specials = settings.at("specials");
     string ignores = settings.at("ignores");

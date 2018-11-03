@@ -8,9 +8,7 @@
 
 int main(int args, char **argv) {
     Tokenizer tkn;
-    tkn.set("specials", "!\"#$%&'()-^\\@[;:],./=~|`{+*}<>?");
-    tkn.set("ignores", "");
-    tkn.set("ignoresplit", " \t\n");
+    tkn.preset("cpp");
     tkn.tokenize_file("main.cpp");
     showv(tkn.tokens);
     return 0;
