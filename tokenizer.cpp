@@ -84,8 +84,9 @@ int Tokenizer::tokenize_file(string filename) {
     int length = ifs.tellg();
     ifs.seekg(0, ifs.beg);
 
-    char *buffer = new char[length];
-    ifs.read(buffer, length);
+    char *buffer = new char[length+1];
+    ifs.read(buffer, length+1);
+    buffer[length] = '\0';
 
     tokenize(buffer);
 
