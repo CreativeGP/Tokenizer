@@ -2,6 +2,7 @@
 #define __TOKENIZER_H__
 
 #define MAX_FILE_SIZE 100000
+typedef unsigned int uint;
 
 #include <string>
 #include <vector>
@@ -9,9 +10,16 @@
 
 using namespace std;
 
+struct Token {
+    string val;
+    uint  line = 1
+        , col  = 0;
+};
+
 class Tokenizer {
     public:
-    vector<string> tokens;
+    vector<Token> tokens;
+    vector<string> tokenvals; // TODO: Should I use string& instead?
     map<string, string> settings;    
     
     Tokenizer();
@@ -22,7 +30,7 @@ class Tokenizer {
     int preset(string name);
 
     private:
-    int add_token(string value);
+    int add_token(string value, uint line, uint col);
 
     const int escape_mode_padding = 100;
 };
