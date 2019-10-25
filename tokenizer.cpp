@@ -46,6 +46,9 @@ int Tokenizer::tokenize(string code) {
     for (int i = 0; i < code.length(); ++i) {
         col++;
         if (code[i] == '\n') {
+            add_token(little, line, col);
+            little = "";
+
             line++;
             col = 0;
         }
