@@ -63,10 +63,12 @@ int Tokenizer::tokenize(string code) {
         if (mode != 0) {
             char escape_chr = escaper[mode-escape_mode_padding];
             if ((code[i-2] == '\\' || code[i-1] != '\\') && code[i] == escape_chr) {
-                add_token(little, line, col);
+                add_token(little+escape_chr, line, col);
 
-                tokens.push_back(Token {ctos(escape_chr), line, col});
-                tokenvals.push_back(ctos(escape_chr));
+                // add_token(little, line, col);
+
+                // tokens.push_back(Token {ctos(escape_chr), line, col});
+                // tokenvals.push_back(ctos(escape_chr));
 
                 mode = 0;
                 little = "";
@@ -74,7 +76,9 @@ int Tokenizer::tokenize(string code) {
         } else {
             if (escaper.find(code[i]) != string::npos) {
                 mode = escape_mode_padding + escaper.find(code[i]);
-                add_token(ctos(code[i]), line, col);
+                // "foofoo" を " foofoo " とするか "foofoo" と解釈するか, 今は後者採用
+                little += code[i];
+                // add_token(ctos(code[i]), line, col);
                 continue;
             }
             
