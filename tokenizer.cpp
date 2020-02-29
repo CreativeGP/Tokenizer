@@ -54,7 +54,7 @@ int Tokenizer::tokenize(string code) {
         }
 
         if (ignores.find(code[i]) != string::npos) continue;
-        if (ignoresplit.find(code[i]) != string::npos) {
+        if (ignoresplit.find(code[i]) != string::npos && mode == 0) {
             add_token(little, line, col);
             little = "";
             continue;
